@@ -11,5 +11,6 @@ const port = process.env.PORT || 4000
 
 app.use(express.json());
 app.use('/api/author', require('./routes/authorRoutes'));
+app.use('/api/book', require('./routes/bookRoutes'));
 
 app.listen(port)
