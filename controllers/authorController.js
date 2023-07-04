@@ -18,7 +18,13 @@ const addAuthor = async (req, res) => {
 const getAuthors = async (req, res) => {
     try {
         const authors = await Author.find();
-        res.status(200).json({message: "Authors synced successfully", data: authors});
+        const mappedAuthors = authors.map(author => {
+            return {
+                id: author._id,
+                name: author.name
+            }
+        })
+        res.status(200).json({message: "Authors synced successfully", data: mappedAuthors});
     } catch (error) {
         res.status(500).json({message: "Author sync unsuccessful", data: error});
     }
@@ -28,7 +34,7 @@ const deleteAuthor = async (req, res) => {
     const author = await Author.findById(req.params.id);
     if (author) {
         try {
-            await Author.findOneAndRemove(req.params.id);
+            await Author.findByIdAndDelete(req.params.id);
             res.status(200).json({message: "Author deleted successfully", data: author});
         } catch (error) {
             res.status(500).json({message: "Author delete unsuccessful", data: error});
